@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Motivation Generator</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            background-color: #000;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Page Styling */
+        .page {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #ff4081;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff4081, 0 0 20px #ff4081, 0 0 30px #ff4081;
+            }
+            to {
+                text-shadow: 0 0 20px #ff4081, 0 0 30px #ff4081, 0 0 40px #ff4081;
+            }
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 20px;
+            border: 3px solid #ff4081;
+            background-color: transparent;
+            color: white;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 64, 129, 0.4), transparent);
+            transition: all 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff4081;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Video Styles */
+        #videoSticker {
+            position: fixed;
+            width: 500px;
+            height: 280px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        #videoSticker iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Initial Page -->
+    <div id="page1" class="page">
+        <h1>Do you want motivation?</h1>
+        <button id="showMotivationBtn">Show Me Motivation</button>
+    </div>
+
+    <!-- Video Page -->
+    <div id="page2" class="page hidden">
+        <div id="videoSticker">
+            <!-- Video will appear here -->
+        </div>
+    </div>
+
+    <script>
+        const videoLinks = [
+            'https://drive.google.com/file/d/1mD4ESHmyyQxutIxo0aHWkQpcnOhyW6H3/preview',
+            'https://drive.google.com/file/d/1k7r7l5kbcQkVstyFR92gkKQq3aZZQw1P/preview',
+            'https://drive.google.com/file/d/1kjhWFVC5cw67SCKb_KywXJW-gQDK9cn0/preview',
+            'https://drive.google.com/file/d/1lpSSmtt1utwwz_4yoFj4FYss-x5z5Oz8/preview',
+            'https://drive.google.com/file/d/1m4dTQ4VSrLFmpj3GvfrIdh1GMMxlw0aE/preview',
+            'https://drive.google.com/file/d/1lnRWrSsnpdqwHV-wHHfYjJ2oXJUQS1R1/preview'
+        ];
+
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const showMotivationBtn = document.getElementById('showMotivationBtn');
+        const videoSticker = document.getElementById('videoSticker');
+
+        showMotivationBtn.addEventListener('click', () => {
+            page1.classList.add('hidden');
+            page2.classList.remove('hidden');
+            showRandomVideo();
+        });
+
+        function showRandomVideo() {
+            if (videoLinks.length > 0) {
+                const randomIndex = Math.floor(Math.random() * videoLinks.length);
+                const randomVideoLink = videoLinks[randomIndex];
+
+                const iframe = document.createElement('iframe');
+                iframe.src = `${randomVideoLink}?autoplay=1&mute=1`;
+                iframe.allow = "autoplay; encrypted-media";
+                iframe.allowFullscreen = true;
+
+                videoSticker.innerHTML = '';
+                videoSticker.appendChild(iframe);
+
+                // Redirect after 30 seconds (assuming video duration)
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 30000); // Adjust time based on video duration
+            }
+        }
+    </script>
+</body>
+</html>
